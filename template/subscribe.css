@@ -1,0 +1,20 @@
+form.newsletter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 1em 3em;
+}
+form.newsletter p, form.newsletter ul, form.newsletter div {
+    margin: 0.5em 0;
+}
+form.newsletter li {
+    list-style-type: none;
+    padding: 0;
+}
+form.newsletter ul {
+    display: flex;
+    flex-direction: row;
+    gap: 1.3em;
+}
