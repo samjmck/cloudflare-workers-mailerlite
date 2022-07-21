@@ -7,12 +7,12 @@ export default {
     async fetch(request: Request, environment: Env, context: ExecutionContext) {
         if(request.method === "POST") {
             try {
-                const json = await request.json<{ email: string, groups: string[] }>();
+                const json = await request.json<{ email: string, group_ids: number[] }>();
                 if(json.email === undefined || json.email === "") {
                     return new Response("email is not defined", { status: 400 });
                 }
-                if(json.groups === undefined) {
-                    return new Response("groups is not defined", { status: 400 });
+                if(json.group_ids === undefined) {
+                    return new Response("group_ids is not defined", { status: 400 });
                 }
                 const createSubscriberResponse = await fetch("https://api.mailerlite.com/api/v2/subscribers", {
                     method: "POST",
@@ -26,12 +26,13 @@ export default {
                     }),
                 });
                 if(createSubscriberResponse.status !== 200 && createSubscriberResponse.status !== 201) {
+                    console.error("createSubscriberResponse", await createSubscriberResponse.text());
                     return new Response("could not create subscriber", { status: createSubscriberResponse.status });
                 }
 
                 const addGroupRequests = [];
-                for(const group of json.groups) {
-                    addGroupRequests.push(fetch(`https://api.mailerlite.com/api/v2/groups/${environment[`GROUP_ID_${group.toUpperCase().replace(/ /g, "_")}`]}/subscribers/import`, {
+                for(const groupId of json.group_ids) {
+                    addGroupRequests.push(fetch(`https://api.mailerlite.com/api/v2/groups/${groupId}/subscribers/import`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -45,6 +46,7 @@ export default {
                 const addGroupResponses = await Promise.all(addGroupRequests);
                 for(const addGroupResponse of addGroupResponses) {
                     if(addGroupResponse.status !== 200 && addGroupResponse.status !== 201) {
+                        console.error("addGroupResponse", await createSubscriberResponse.text());
                         return new Response("could not assign group", { status: addGroupResponse.status });
                     }
                 }

@@ -6,9 +6,9 @@ const responseElement = formElement.querySelector("p.result");
 formElement.addEventListener("submit", async event => {
     event.preventDefault();
     const email = emailElement.value;
-    const groups = [];
+    const groupIds = [];
     formCheckboxElements.forEach(checkboxElement => {
-        groups.push(checkboxElement.value);
+        groupIds.push(Number(checkboxElement.value));
     });
     const response = await fetch("/newsletter", {
         method: "POST",
@@ -17,7 +17,7 @@ formElement.addEventListener("submit", async event => {
         },
         body: JSON.stringify({
             email,
-            groups,
+            groups_ids: groupIds,
         }),
     });
     if(response.status === 200 || response.status === 201) {
