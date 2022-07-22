@@ -7,7 +7,8 @@ export default {
     async fetch(request: Request, environment: Env, context: ExecutionContext) {
         if(request.method === "POST") {
             try {
-                const json = await request.json<{ email: string, group_ids: number[] }>();
+                // Note: group_ids are strings that contain a number (numbers would be too big, larger than Number.MAX_SAFE_INTEGER)
+                const json = await request.json<{ email: string, group_ids: string[] }>();
                 if(json.email === undefined || json.email === "") {
                     return new Response("email is not defined", { status: 400 });
                 }
@@ -46,7 +47,7 @@ export default {
                 const addGroupResponses = await Promise.all(addGroupRequests);
                 for(const addGroupResponse of addGroupResponses) {
                     if(addGroupResponse.status !== 200 && addGroupResponse.status !== 201) {
-                        console.error("addGroupResponse", await createSubscriberResponse.text());
+                        console.error("addGroupResponse", await addGroupResponse.text());
                         return new Response("could not assign group", { status: addGroupResponse.status });
                     }
                 }

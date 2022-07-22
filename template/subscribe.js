@@ -8,7 +8,7 @@ formElement.addEventListener("submit", async event => {
     const email = emailElement.value;
     const groupIds = [];
     formCheckboxElements.forEach(checkboxElement => {
-        groupIds.push(Number(checkboxElement.value));
+        groupIds.push(checkboxElement.value);
     });
     const response = await fetch("/newsletter", {
         method: "POST",
