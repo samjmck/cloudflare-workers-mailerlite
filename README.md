@@ -2,7 +2,11 @@
 
 Basic MailerLite integration with Cloudflare Workers
 
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/samjmck/cloudflare-workers-mailerlite)
+
 ## Getting started
+
+Use the "Deploy with Workers" button above or following the following steps in your terminal:
 
 1. Clone this repository with `git clone https://github.com/samjmck/cloudflare-workers-mailerlite.git`
 2. `cd` into the repository with `cd cloudflare-workers-mailerlite`
